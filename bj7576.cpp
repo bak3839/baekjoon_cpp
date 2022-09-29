@@ -28,11 +28,11 @@ void bfs() {
 			int ny = y + mv2[i];
 
 			if ((nx >= 0 && nx < N) && (ny >= 0 && ny < M)) { // 범위가 넘어가면 무시
-				if (!graph[nx][ny]) {
-					graph[nx][ny] = graph[x][y] + 1;
-					res = max(res, graph[nx][ny]);
-					q.push({ nx,ny });
-					--cnt;
+				if (!graph[nx][ny]) { // 안익은 토마토라면 실행
+					graph[nx][ny] = graph[x][y] + 1; // 현재 위치의 일수보다 +1 해서 넘기기
+					res = max(res, graph[nx][ny]); // 지금까지 나온 일수중 최대값으로 저장
+					q.push({ nx,ny }); // 다음위치 큐에 저장
+					--cnt; // 안익은 토마토 -1
 				}
 			}
 		}
@@ -48,19 +48,20 @@ int main() {
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < M; j++) {
 			cin >> graph[i][j];
-			if (graph[i][j] == 0) ++cnt;
+			if (graph[i][j] == 0) ++cnt; // 안익은 토마토 개수 저장
 
-			else if(graph[i][j] == 1) q.push({ i,j });
+			else if(graph[i][j] == 1) q.push({ i,j }); // 익은 토마토 좌표 큐에 저장
 		}
 	}
-	if (cnt == 0) {
+
+	if (cnt == 0) { // 입력 받았는데 안익은 토마토가 없다면 끝내기
 		cout << 0;
 		return 0;
 	}
 
-	bfs();
+	bfs(); // 탐색 시작
 
-	if(!cnt) cout << res - 1;
-	else cout << -1;
+	if(!cnt) cout << res - 1; // 안익은 토마토가 남아있지 않으면 일수 출력
+	else cout << -1; // 안익은 토마토가 남았다면 -1
 	return 0;
 }
