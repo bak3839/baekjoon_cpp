@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <vector>
 
 using namespace std;
@@ -7,25 +8,25 @@ int main() {
 	ios_base::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
 
-	int N, B, K, n, res = 1000001;
+	int N, B, K, n, res = 1000001, sum = 0;
 	cin >> N >> K >> B;
 
-	vector<int> v;
+	vector<int> v(N + 1, 0);
 
 	for (int i = 0; i < B; i++) {
 		cin >> n;
-		v.push_back(n);
+		v[n] = 1;
 	}
+	
+	for (int i = 1; i <= K; i++) {
+		if (v[i]) sum++;
+	}
+	res = min(res, sum);
 
-	int l = 1, r = K;
-
-	while (r <= N) {
-		int cnt = 0;
-		for (int i = 0; i < B; i++) {
-			if (l <= v[i] && v[i] <= r) cnt++;
-		}
-		res = min(res, cnt);
-		l++; r++;
+	for (int i = K + 1; i <= N; i++) {
+		if (v[i]) sum++;
+		if (v[i - K]) sum--;
+		res = min(res, sum);
 	}
 
 	cout << res;
