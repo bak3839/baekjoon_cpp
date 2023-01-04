@@ -16,7 +16,7 @@ int solution(vector<int> queue1, vector<int> queue2) {
     target = (sum1 + sum2) / 2;
     
     while(sum1 != target){
-        if((size1 <= idx1 || size2 <= idx2) || max_cnt + 2 < cnt) {
+        if((size1 <= idx1 || size2 <= idx2) || max_cnt + 1 < cnt) {
             cnt = -1;
             break;
         }
