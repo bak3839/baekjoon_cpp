@@ -9,8 +9,8 @@ queue<pair<int, int>> fire;
 
 bool pass;
 int N, M, res;
-int mv1[4] = { 0, 0 ,-1, 1 };
-int mv2[4] = { -1, 1, 0, 0 };
+int mv1[4] = { -1, 1, 0, 0 };
+int mv2[4] = { 0, 0 ,-1, 1 };
 
 void moveFire() {
 	int size = fire.size();
