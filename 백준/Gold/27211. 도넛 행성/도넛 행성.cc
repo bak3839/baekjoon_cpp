@@ -7,8 +7,8 @@ using namespace std;
 vector<vector<short>> map;
 
 int N, M, res, cnt;
-int mv1[4] = { 0, 0 ,-1, 1 };
-int mv2[4] = { -1, 1, 0, 0 };
+int mv1[4] = { -1, 1, 0, 0 };
+int mv2[4] = { 0, 0 ,-1, 1 };
 
 void bfs(int i, int j) {
     ++res;
