@@ -15,39 +15,29 @@ int main() {
         queue<pair<int, int>> q;
         string s1, s2, res;
         bool pass = true;
-        int idx1 = 0, idx2 = 0;
 
         cin >> s1 >> s2 >> res;
-        vector<vector<bool>> checked(s1.size(), vector<bool>(s2.size()));
+        vector<vector<bool>> checked(s1.size() + 1, vector<bool>(s2.size() + 1, false));
 
-        for (int i = 0; i < res.size(); i++) {
-            if (idx1 < s1.size() && s1[idx1] == res[i] && s2[idx2] == res[i]) {
-                if (!checked[idx1][idx2]) q.push({ idx1, idx2 });
-                checked[idx1][idx2] = true;
-                idx1++;
+        q.push({ 0, 0 });
+
+        while (!q.empty()) {
+            int idx1 = q.front().first;
+            int idx2 = q.front().second;
+            q.pop();
+
+            if (idx1 < s1.size() && s1[idx1] == res[idx1 + idx2] && !checked[idx1 + 1][idx2]) {
+                q.push({ idx1 + 1, idx2 });
+                checked[idx1 + 1][idx2] = true;
             }
 
-            else if (idx1 < s1.size() && s1[idx1] == res[i]) idx1++;
-
-            else if (idx2 < s2.size() && s2[idx2] == res[i]) idx2++;
-
-            else {
-                if (!q.empty()) {
-                    idx1 = q.front().first;
-                    idx2 = q.front().second;
-                    i = idx1 + idx2;
-                    idx2++;
-                    q.pop();
-                }
-
-                else {
-                    pass = false;
-                    break;
-                }
+            if (idx2 < s2.size() && s2[idx2] == res[idx1 + idx2] && !checked[idx1][idx2 + 1]) {
+                q.push({ idx1, idx2 + 1 });
+                checked[idx1][idx2 + 1] = true;
             }
         }
 
-        if (pass) cout << "Data set " << j << ": yes" << "\n";
+        if (checked[s1.size()][s2.size()]) cout << "Data set " << j << ": yes" << "\n";
         else cout << "Data set " << j << ": no" << "\n";
     }
 
