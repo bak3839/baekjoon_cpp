@@ -12,30 +12,31 @@ int main() {
     cin >> T;
 
     for (int j = 1; j <= T; j++) {
-        queue<vector<int>> q;
+        queue<pair<int, int>> q;
         string s1, s2, res;
         bool pass = true;
-        int index1 = 0, index2 = 0;
+        int idx1 = 0, idx2 = 0;
 
         cin >> s1 >> s2 >> res;
-        vector<vector<bool>> visited(s1.size(), vector<bool>(s2.size()));
+        vector<vector<bool>> checked(s1.size(), vector<bool>(s2.size()));
 
         for (int i = 0; i < res.size(); i++) {
-            if (index1 < s1.size() && s1[index1] == res[i] && s2[index2] == res[i]) {
-                if (!visited[index1][index2]) q.push({ i, index1, index2 });
-                visited[index1][index2] = true;
-                index1++;
+            if (idx1 < s1.size() && s1[idx1] == res[i] && s2[idx2] == res[i]) {
+                if (!checked[idx1][idx2]) q.push({ idx1, idx2 });
+                checked[idx1][idx2] = true;
+                idx1++;
             }
 
-            else if (index1 < s1.size() && s1[index1] == res[i]) index1++;
+            else if (idx1 < s1.size() && s1[idx1] == res[i]) idx1++;
 
-            else if (index2 < s2.size() && s2[index2] == res[i]) index2++;
+            else if (idx2 < s2.size() && s2[idx2] == res[i]) idx2++;
 
             else {
                 if (!q.empty()) {
-                    i = q.front()[0];
-                    index1 = q.front()[1];
-                    index2 = q.front()[2] + 1;
+                    idx1 = q.front().first;
+                    idx2 = q.front().second;
+                    i = idx1 + idx2;
+                    idx2++;
                     q.pop();
                 }
 
