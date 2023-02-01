@@ -7,16 +7,13 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    int N, res, min_idx = 1, max_idx = 2;
+    int N, res;
     cin >> N;
 
-    vector<int> v(N + 1);
     vector<int> sum(N + 1, 0);
 
     for (int i = 1; i <= N; i++) {
-        cin >> v[i];
-        sum[i] = v[i];
-
+        cin >> sum[i];
         if (i > 2) sum[i] += sum[i - 2];   
     }
 
