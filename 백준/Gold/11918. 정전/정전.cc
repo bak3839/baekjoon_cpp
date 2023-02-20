@@ -29,10 +29,7 @@ int main() {
 		int s = pos[i] - L;
 		int e = pos[i] + L;
 
-		if (pos[i - 1] + L <= s) {
-			dup = pos[i - 1] + L;
-			continue;
-		}
+		if (pos[i - 1] + L <= s) continue;
 
 		if (dup <= s) ans += abs(pos[i - 1] + L - s);
 		else ans += abs(pos[i - 1] + L - dup);
