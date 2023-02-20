@@ -14,11 +14,11 @@ int main() {
 	long long ans = 0;
 	int N, L, d, dup;
 	cin >> N >> L;
-	vector<pii> pos;
+	vector<int> pos;
 
 	for (int i = 0; i < N; i++) {
 		cin >> d;
-		pos.push_back(make_pair(d - L, d + L));
+		pos.push_back(d);
 	}
 
 	sort(pos.begin(), pos.end());
@@ -26,16 +26,18 @@ int main() {
 	dup = -2100000000;
 
 	for (int i = 1; i < N; i++) {
+		int s = pos[i] - L;
+		int e = pos[i] + L;
 
-		if (pos[i - 1].second <= pos[i].first) {
-			dup = pos[i - 1].second;
+		if (pos[i - 1] + L <= s) {
+			dup = pos[i - 1] + L;
 			continue;
 		}
 
-		if (dup <= pos[i].first) ans += abs(pos[i - 1].second - pos[i].first);
-		else ans += abs(pos[i - 1].second - dup);
+		if (dup <= s) ans += abs(pos[i - 1] + L - s);
+		else ans += abs(pos[i - 1] + L - dup);
 
-		dup = pos[i - 1].second;
+		dup = pos[i - 1] + L;
 	}
 
 	cout << ans;
