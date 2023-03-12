@@ -29,27 +29,19 @@ void col_find(int y) {
 	}
 }
 
-void search() {
-	int cnt;
+void search(int x1, int y1, int x2, int y2) {
+	int cnt = 1;
 
-	for (int i = 0; i < N; i++) {
-		cnt = 1;
-		for (int j = 0; j < N - 1; j++) {
-			if (map[i][j] == map[i][j + 1]) cnt++;
-			else cnt = 1;
-
-			ans = max(ans, cnt);
-		}
+	if (x1 == x2) {
+		row_find(x1);
+		col_find(y1);
+		col_find(y2);
 	}
 
-	for (int i = 0; i < N; i++) {
-		cnt = 1;
-		for (int j = 0; j < N - 1; j++) {
-			if (map[j][i] == map[j + 1][i]) cnt++;
-			else cnt = 1;
-
-			ans = max(ans, cnt);
-		}
+	else {
+		row_find(x1);
+		row_find(x2);
+		col_find(y1);
 	}
 }
 
@@ -68,13 +60,13 @@ void solve(int x, int y) {
 	else {
 		if (x + 1 < N && map[x][y] != map[x + 1][y]) {
 			change(x, y, x + 1, y);
-			search();
+			search(x, y, x + 1, y);
 			change(x, y, x + 1, y);
 		}
 
 		if (y + 1 < N && map[x][y] != map[x][y + 1]) {
 			change(x, y, x, y + 1);
-			search();
+			search(x, y, x, y + 1);
 			change(x, y, x, y + 1);
 		}
 	}
@@ -95,6 +87,9 @@ int main() {
 			cin >> map[i][j];
 		}
 	}
+
+	for (int i = 0; i < N; i++) row_find(i);
+	for (int i = 0; i < N; i++) col_find(i);
 
 	solve(0, 0);
 
