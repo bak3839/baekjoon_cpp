@@ -33,7 +33,7 @@ void input(int n, int m) {
     int a, b;
     for (int i = 0; i < m; i++) {
         cin >> a >> b;
-        if (pass) continue;
+        if (pass) break;
 
         pass = Union(a, b);
         if(pass) ans = i + 1;
