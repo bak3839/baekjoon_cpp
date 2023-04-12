@@ -44,21 +44,14 @@ void Solution(int N, int M) {
         int size = q.size() / 2;
         int target = want[n - M];
 
-        if (q.size() % 2) {
-            for (int i = size + 1; i < q.size(); i++) {
-                if (target == q[i]) pass = true;
-            }
-            if (pass) right(target);
-            else left(target);
+        if (q.size() % 2) size += 1;
+
+        for (int i = size; i < q.size(); i++) {
+            if (target == q[i]) pass = true;
         }
 
-        else {
-            for (int i = size; i < q.size(); i++) {
-                if (target == q[i]) pass = true;
-            }
-            if (pass) right(target);
-            else left(target);
-        } 
+        if (pass) right(target);
+        else left(target);
     }
     cout << cnt;
 }
