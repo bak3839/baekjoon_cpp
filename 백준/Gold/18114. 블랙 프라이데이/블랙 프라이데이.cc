@@ -8,8 +8,8 @@ int N, C, limit, ans;
 vector<int> w;
 vector<int> visit;
 
-void Check(int sum) {
-    int index = lower_bound(w.begin(), w.end(), C - sum) - w.begin();
+void Check(int sum, int x) {
+    int index = lower_bound(w.begin() + x, w.end(), C - sum) - w.begin();
 
     if (index >= N) return;
 
@@ -24,7 +24,7 @@ void Combination(int x, int sum, int cnt) {
     if (ans) return;
 
     if (limit == cnt) {
-        Check(sum);
+        Check(sum, x);
         return;
     }
 
