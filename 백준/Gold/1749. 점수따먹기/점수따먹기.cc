@@ -37,21 +37,6 @@ void Solution() {
         }
     }
 
-    for (int i = 1; i <= M; i++) {
-        for (int j = 1; j <= N; j++) {
-            if (i == j) continue;
-
-            for (int r = i; r <= N; r++) {
-                for (int c = j; c <= M; c++) {
-                    x1 = r - i + 1; y1 = c - j + 1;
-                    x2 = r; y2 = c;
-
-                    ans = max(mat[x2][y2] - mat[x2][y1 - 1] - mat[x1 - 1][y2] + mat[x1 - 1][y1 - 1], ans);
-                }
-            }
-        }
-    }
-
     cout << ans;
 }
 
