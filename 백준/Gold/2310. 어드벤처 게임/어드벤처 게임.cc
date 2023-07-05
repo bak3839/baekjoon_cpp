@@ -13,7 +13,7 @@ vector<vector<int>> map;
 
 void dfs(int x, int money) {
     visit[x] = true;
-
+   
     if (type[x].first == 'L' && money < type[x].second) money = type[x].second;
     if (type[x].first == 'T') money -= type[x].second;
 
@@ -22,10 +22,7 @@ void dfs(int x, int money) {
         return;
     }
 
-    if (x == N) {
-        goal = true;
-        return;
-    }
+    if (x == N) return;
 
     for (int i = 0; i < map[x].size(); i++) {
         int next = map[x][i];
@@ -40,7 +37,7 @@ void dfs(int x, int money) {
 void Solution() {
     dfs(1, 0);
 
-    if (goal) cout << "Yes" << "\n";
+    if (visit[N]) cout << "Yes" << "\n";
     else cout << "No" << "\n";
 
     map.clear();
