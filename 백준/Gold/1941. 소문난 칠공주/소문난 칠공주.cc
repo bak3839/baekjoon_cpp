@@ -35,8 +35,11 @@ void dfs(int x, int y) {
 void Combination(int x, int y) {
     int tmp = y + 1;
 
+    if (total - dasom > 3) return;
+
     if (total == 7) {
         cnt = 0;
+
         if (dasom >= 4) {
             dfs(princess.first, princess.second);
             fill(&visit[0][0], &visit[4][5], false);
@@ -46,7 +49,9 @@ void Combination(int x, int y) {
 
     for (int i = x; i < 5; i++) {
         for (int j = tmp; j < 5; j++) {
-            if (map[i][j] == 'S') dasom++;
+            if (total == 0) princess = { i, j };
+
+            if (map[i][j] == 'S') dasom++;        
             total++;
             check[i][j] = true;            
 
@@ -61,21 +66,7 @@ void Combination(int x, int y) {
 }
 
 void Solution() {
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
-            if (map[i][j] == 'S') dasom++;
-            total++;
-            check[i][j] = true;
-            princess = { i, j };
-            
-            Combination(i, j);
-
-            dasom = 0;
-            total = 0;
-            check[i][j] = false;
-        }           
-    }
-
+    Combination(0, -1);
     cout << ans;
 }
 
