@@ -1,54 +1,45 @@
-#include <string>
+#include <algorithm>
 #include <vector>
-#include <map>
-#include <iostream>
 
 using namespace std;
 
 vector<int> solution(vector<string> id_list, vector<string> report, int k) {
-    vector<int> res(id_list.size(), 0);
-
-    vector<vector<int>> over(id_list.size(),vector <int>(id_list.size(),1));
+    int size = id_list.size();
     
-    map<string, pair<int, int>> m;
+    vector<int> cnt(size);
+    vector<int> result(size, 0);
     
-    for(int i = 0; i < id_list.size(); i++){ // first = 유저번호 second = 신고회수
-        m.insert({id_list[i], make_pair(i, 0)});
+    // 신고 가능 횟수를 1회씩 부여
+    vector<vector<bool>> chance(size, vector<bool>(size, true));
+    
+    for(int i = 0; i < report.size(); i++) {
+        string p1 = ""; // 신고 한 사람
+        string p2 = ""; // 신고 당한 사람
+        
+        int j;
+        for(j = 0; report[i][j] != ' '; j++)
+            p1 += report[i][j];
+        p2 = report[i].substr(j + 1);
+        
+        auto it1 = find(id_list.begin(), id_list.end(), p1);
+        auto it2 = find(id_list.begin(), id_list.end(), p2);
+        
+        int idx1 = it1 - id_list.begin();
+        int idx2 = it2 - id_list.begin();
+        
+        if(!chance[idx1][idx2]) continue;
+        
+        cnt[idx2]++;
+        chance[idx1][idx2] = false;
     }
     
-    string dec = ""; // 신고 당한 사람
-    string per = ""; // 신고 한 사람
-    
-    for(int j = 0; j < report.size(); j++) { // 신고내역 파싱
-        string rp = report[j];
-        dec = "";
-        per = "";
+    for(int i = 0; i < cnt.size(); i++) {
+        if(cnt[i] < k) continue;
         
-        int i = 0;
-        for(i = 0; rp[i] != ' '; i++){
-            per += rp[i];
-        }
-        dec = rp.substr(i + 1);
-        pair<int, int> p1 = m[dec]; // 신고 당한 사람
-        
-        pair<int, int> p2 = m[per]; // 신고 한 사람
-        
-        if(over[p1.first][p2.first] != 1) continue;
-        
-        over[p1.first][p2.first] = 0;
-        m[dec].second++;   
-    }
-
-    for(int i = 0; i < id_list.size(); i++){
-        int user = m[id_list[i]].first; // 유저번호
-        int n = m[id_list[i]].second; // 신고회수
-        
-        if(n >= k){
-            for(int j = 0; j < id_list.size(); j++){
-                if(over[user][j] == 0) res[j]++;
-            }
+        for(int j = 0; j < size; j++){
+            if(!chance[j][i]) result[j]++;
         }
     }
-    
-    return res;
+     
+    return result;
 }
