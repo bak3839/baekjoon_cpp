@@ -35,9 +35,7 @@ int solution(vector<string> friends, vector<string> gifts) {
             if(i == j || count[i][j] < count[j][i]) continue;
             
             if(count[i][j] > count[j][i]) res++;
-            else {
-                if(point[i] > point[j]) res++;
-            }
+            else if(point[i] > point[j]) res++;
         }
         
         ans = max(res, ans);
