@@ -5,53 +5,44 @@
 using namespace std;
 using pii = pair<int, int>;
 
-int N, M, S, E, C;
-vector<pii> d;
-vector<vector<pii>> graph;
+int N, M, S, E, C, ans = 210000000;
+vector<bool> visit;
+vector<vector<int>> cost;
 
-void Solution() {
-    priority_queue<pii> pq;
-    pq.push({ 0, S });
-    d[S].first = 0;
+void Search(int x, int total, int maxCost) {
+    if (total > C) return;
 
-    while (!pq.empty()) {
-        int dist = -pq.top().first;
-        int now = pq.top().second;
-        pq.pop();
-
-        if (d[now].first < dist && now == E) break;
-        if (d[now].first < dist) continue;
-
-        for (int i = 0; i < graph[now].size(); i++) {
-            int next = graph[now][i].first;
-            int cost = dist + graph[now][i].second;
-
-            if (d[next].first > cost && cost <= C) {
-                if (d[next].second != 0 && d[next].second < d[now].second) continue;
-
-                d[next].first = cost;
-                d[next].second = max(d[now].second, graph[now][i].second);
-                pq.push({ -cost, next });
-            }
-        }
+    if (x == E) {
+        ans = min(ans, maxCost);
+        return;
     }
 
-    if (d[E].second == 0) cout << -1;
-    else cout << d[E].second;
+    for (int i = 1; i <= N; i++) {
+        if (cost[x][i] == 0 || visit[i]) continue;
+
+        visit[i] = true;
+        Search(i, total + cost[x][i], max(maxCost, cost[x][i]));
+        visit[i] = false;
+    }
+}
+
+void Solution() {
+    Search(S, 0, 0);
+    
+    if (ans == 210000000) cout << -1;
+    else cout << ans;
 }
 
 void Input() {
-    int v1, v2, c;
+    int s, e, c;
     cin >> N >> M >> S >> E >> C;
 
-    graph.resize(N + 1);
-    d.resize(N + 1, { 2100000000, 0 });
+    visit.resize(N + 1, false);
+    cost.resize(N + 1, vector<int>(N + 1, 0));
 
     for (int i = 0; i < M; i++) {
-        cin >> v1 >> v2 >> c;
-
-        graph[v1].push_back({ v2, c });
-        graph[v2].push_back({ v1, c });
+        cin >> s >> e >> c;
+        cost[s][e] = cost[e][s] = c;
     }
 }
 
