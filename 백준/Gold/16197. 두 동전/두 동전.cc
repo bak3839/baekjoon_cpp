@@ -57,7 +57,7 @@ void BFS() {
                 f1 = FallOfBoard(nx1, ny1);
                 f2 = FallOfBoard(nx2, ny2);
 
-                if ((f1 && !f2) || (!f1 && f2)) return;
+                if (f1 ^ f2) return;
                 if (f1 && f2) continue;
 
                 IsWall(x1, y1, &nx1, &ny1);
