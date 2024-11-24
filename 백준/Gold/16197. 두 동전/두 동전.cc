@@ -17,7 +17,7 @@ int mv[4][2] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
 vector<pii> loc;
 vector<string> map;
 vector<vector<bool>> checked;
-vector<vector<int>> CoinLocNum1, CoinLocNum2;
+vector<vector<int>> CoinLocNum;
 
 bool FallOfBoard(int x, int y) {
     return (x < 0 || y < 0 || x >= N || y >= M);
@@ -36,8 +36,8 @@ void BFS() {
 
     x1 = loc[0].first, y1 = loc[0].second;
     x2 = loc[1].first, y2 = loc[1].second;
-    c1 = CoinLocNum1[x1][y1];
-    c2 = CoinLocNum2[x2][y2];
+    c1 = CoinLocNum[x1][y1];
+    c2 = CoinLocNum[x2][y2];
 
     queue<Coin> q;
     q.push({ x1, y1, x2, y2 });
@@ -63,8 +63,8 @@ void BFS() {
                 IsWall(x1, y1, &nx1, &ny1);
                 IsWall(x2, y2, &nx2, &ny2);
 
-                c1 = CoinLocNum1[nx1][ny1];
-                c2 = CoinLocNum2[nx2][ny2];
+                c1 = CoinLocNum[nx1][ny1];
+                c2 = CoinLocNum[nx2][ny2];
                 
                 if (checked[c1][c2]) continue;
 
@@ -117,8 +117,7 @@ void Input() {
         }
     }
         
-    InsertCoinNum(CoinLocNum1);
-    InsertCoinNum(CoinLocNum2);
+    InsertCoinNum(CoinLocNum);
 }
 
 int main() {
