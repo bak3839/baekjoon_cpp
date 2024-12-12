@@ -1,21 +1,21 @@
 #include <string>
 #include <vector>
+#include <map>
 #include <iostream>
 #include <sstream>
 #include <algorithm>
 
 using namespace std;
+using pii = pair<int, int>;
 
-bool compare(vector<int> v1, vector<int> v2) {
-    return v1.size() < v2.size();
+bool compare(pii p1, pii p2) {
+    return p1.second > p2.second;
 }
 
 vector<int> solution(string s) {
-    vector<int> answer;
-    vector<int> tmp;
-    vector<bool> checked(100001, false);
-    vector<vector<int>> total;
-    
+    map<int, int> m;
+    vector<int> answer;    
+    vector<vector<int>> total;   
     
     string set, num;
     stringstream ss(s);
@@ -27,21 +27,16 @@ vector<int> solution(string s) {
         stringstream ss2(set);
         
         while(getline(ss2, num, ',')) {
-            tmp.push_back(stoi(num));
+            int n = stoi(num);
+            m[n]++;
         }
-        total.push_back(tmp);
-        tmp.clear();
     }
     
-    sort(total.begin(), total.end(), compare);
+    vector<pii> res(m.begin(), m.end());
+    sort(res.begin(), res.end(), compare);
     
-    for(auto nums : total) {
-        for(auto n : nums) {
-            if(checked[n]) continue;
-            
-            checked[n] = true;
-            answer.push_back(n);
-        }       
+    for(auto p : res) {
+        answer.push_back(p.first);
     }
     
     return answer;
