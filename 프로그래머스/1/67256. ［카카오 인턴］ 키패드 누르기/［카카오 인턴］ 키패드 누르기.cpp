@@ -3,43 +3,6 @@
 using namespace std;
 using pii = pair<int, int>;
 
-int mv[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-int keypad[4][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 0, 11}};
-
-int getDist(int r, int c, int target) {
-    if(keypad[r][c] == target) return 0;
-    
-    int x, y, nx, ny, size, dist = 0;
-    vector<bool> visited(12, false);
-    
-    queue<pii> q;
-    q.push({r, c});
-    visited[keypad[r][c]] = true;
-    
-    while(!q.empty()) {
-        size = q.size();
-        
-        while(size--) {
-            x = q.front().first;
-            y = q.front().second;
-            q.pop();
-        
-            for(int i = 0; i < 4; i++) {
-                nx = x + mv[i][0];
-                ny = y + mv[i][1];
-            
-                if(nx < 0 || ny < 0 || nx > 3 || ny > 2 || visited[keypad[nx][ny]]) continue;
-                if(keypad[nx][ny] == target) return dist + 1;
-                
-                q.push({nx, ny});
-                visited[keypad[nx][ny]] = true;
-            }
-        }
-        dist++;
-    }
-    return dist;
-}
-
 string solution(vector<int> numbers, string hand) {
     string answer = "";
     vector<pii> coor(10);    
@@ -73,8 +36,8 @@ string solution(vector<int> numbers, string hand) {
         }
         
         else {
-            int distL = getDist(L.first, L.second, n);
-            int distR = getDist(R.first, R.second, n);
+            int distL = abs(L.first - x) + abs(L.second - y);
+            int distR = abs(R.first - x) + abs(R.second - y);
         
             if(distL < distR || (distL == distR && hand == "left")) {
                 answer.push_back('L');
