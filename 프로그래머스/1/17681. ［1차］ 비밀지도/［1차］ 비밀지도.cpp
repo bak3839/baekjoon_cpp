@@ -12,7 +12,7 @@ vector<string> solution(int n, vector<int> arr1, vector<int> arr2) {
         
         for(int j = 0; j < n; j++) {
             mod = res % 2;
-            res /= 2;
+            res = res >> 1;
             
             if(mod == 1) {
                 s1 = "#" + s1;
@@ -25,7 +25,7 @@ vector<string> solution(int n, vector<int> arr1, vector<int> arr2) {
         
         for(int j = 0; j < n; j++) {
             mod = res % 2;
-            res /= 2;
+            res = res >> 1;
             
             if(mod == 1 || s1[n - j - 1] == '#') {
                 sum = "#" + sum;
