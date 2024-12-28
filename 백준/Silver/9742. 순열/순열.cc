@@ -1,53 +1,49 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
+#include <algorithm>
 
 using namespace std;
-
-string S, ans;
-int cnt = 0, N;
-bool finish = false;
-vector<bool> used;
-
-void Permu(string tmp) {
-    if (tmp.size() == S.size()) {
-        cnt++;
-        if (cnt == N) {
-            ans = tmp;
-            finish = true;
-            return;
-        }
-        return;
-    }
-
-    for (int i = 0; i < S.size(); i++) {
-        if (used[i]) continue;
-
-        used[i] = true;
-        Permu(tmp + S[i]);
-        used[i] = false;
-
-        if (finish) return;
-    }
-}
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
 
+    bool finish;
+    int N, num, cnt;
+    string S, ans;
+    vector<char> v;
+
     while (cin >> S >> N) {
-        used.resize(S.size(), false);
-        Permu("");
-        used.clear();
+        finish = false;
+        num = 1, cnt = 0;
+
+        for (int i = 2; i <= S.size(); i++) num *= i;
+
+        if (num >= N) {
+            for (char ch : S) v.push_back(ch);
+
+            do {
+                cnt++;
+
+                if (cnt == N) {
+                    string tmp = "";
+
+                    for (char ch : v) tmp.push_back(ch);
+
+                    ans = tmp;
+                    finish = true;
+                }
+
+            } while (next_permutation(v.begin(), v.end()));
+        }
 
         cout << S << " " << N << " = ";
 
         if (finish) cout << ans << "\n";
         else cout << "No permutation\n";
 
-        cnt = 0;
-        finish = false;
+        v.clear();
     }
     return 0;
 }
