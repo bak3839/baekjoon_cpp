@@ -1,25 +1,31 @@
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int N;
-string board[100];
-bool chk = 1;
-
 int main() {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	cin >> N;
-	for (int r = 0; r < N; r++) cin >> board[r];
+    int N;
+    vector<string> A;
+    cin >> N;
 
-	for (int r = 0; r < N; r++) {
-		for (int c = r + 1; c < N; c++) {
-			if (board[r][c] != board[c][r]) chk = 0;
-		}
-	}
+    A.resize(N);
 
-	if (chk) cout << "YES";
-	else cout << "NO";
+    for (int i = 0; i < N; i++) {
+        cin >> A[i];
+    }
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (A[i][j] != A[j][i]) {
+                cout << "NO";
+                return 0;
+            }
+        }
+    }
+
+    cout << "YES";
+    return 0;
 }
