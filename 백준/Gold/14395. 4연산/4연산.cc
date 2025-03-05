@@ -1,72 +1,65 @@
 #include <bits/stdc++.h>
 
-#define INF 10000000000000
 using namespace std;
+using pls = pair<long long, string>;
 
-int s, t;
-string result;
-bool flag = false;
+int S, T;
+set<long long> visited;
+char operation[4] = { '*', '+', '-', '/' };
 
-void input(){
-    cin >> s >> t;
-}
+void bfs() {
+    queue<pls> q;
+    q.push({ S, "" });
+    visited.insert(S);
 
-void solve(){
-    unordered_set<long long> hashmap;
-    queue<pair<long long, string>> q;
-    q.push({s, ""});
+    if (S == T) {
+        cout << 0;
+        return;
+    }
 
-    while(!q.empty()){
-        long long cur = q.front().first;
+    while (q.size()) {
+        long long s = q.front().first;
         string str = q.front().second;
         q.pop();
 
-        if(cur == t){
-            flag = true;
-            result = str;
+        if (s == T) {
+            cout << str;
             return;
         }
-        long long next = cur * cur;
-        if(hashmap.find(next) == hashmap.end()){
-            hashmap.insert(next);
-            q.push({cur * cur, str + "*"});
-        }
-        next = cur + cur;
-        if(hashmap.find(next) == hashmap.end()){
-            hashmap.insert(next);
-            q.push({cur + cur, str + "+"});
-        }
-        next = cur - cur;
-        if(hashmap.find(next) == hashmap.end()){
-            hashmap.insert(next);
-            q.push({cur - cur, str + "-"});
+
+        long long next = s * s;
+        if (visited.find(next) == visited.end()) {
+            q.push({ next, str + '*' });
+            visited.insert(s * s);
         }
 
-        if(cur != 0){
-            next = cur / cur;
-            if(hashmap.find(next) == hashmap.end()){
-                hashmap.insert(next);
-                q.push({cur / cur, str + "/"});
-            }
+        next = s + s;
+        if (visited.find(next) == visited.end()) {
+            q.push({ next, str + '+' });
+            visited.insert(next);
         }
 
+        if (visited.find(0) == visited.end()) {
+            q.push({ 0, str + '-' });
+            visited.insert(0);
+        }
+
+        if (s != 0 && (visited.find(1) == visited.end())) {
+            q.push({ 1, str + '/' });
+            visited.insert(1);
+        }
     }
+
+    cout << -1;
 }
 
-int main(){
+int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
 
-    input();
-    if(s == t){
-        cout << "0";
-    }
-    else{
-        solve();
-        if(flag) cout << result;
-        else cout << "-1";
-    }
+    cin >> S >> T;
 
+    bfs();
     return 0;
 }
