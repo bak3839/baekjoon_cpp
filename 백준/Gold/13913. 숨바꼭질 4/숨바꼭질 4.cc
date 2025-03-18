@@ -1,71 +1,55 @@
-#include <iostream>
-#include <vector>
-#include <queue>
+#include <bits/stdc++.h>
+#define prev aaa
 
 using namespace std;
 
-int N, K, ans = 100001;
-int mv[2] = { -1, 1 };
-vector<int> pre(100005, -1);
+const int MAX = 200001;
 
-void solve(int n) {
-    if (n != N) {
-        solve(pre[n]);
-    }
-    cout << n << " ";
-}
+int N, K, prev[MAX];
+bool visited[MAX];
+vector<int> v;
 
-void search() {
-    queue<pair<int, int>> q;
-    q.push({ N, 0 });
+void bfs() {
+    queue<int> q;
+    q.push(N);
+    visited[N] = true;
 
-    while (!q.empty()) {
-        int now = q.front().first;
-        int cnt = q.front().second;
+    while (q.size()) {
+        int here = q.front();
         q.pop();
 
-        if (now == K) {
-            ans = cnt;
+        if (here == K) {
             break;
         }
 
-        if (now > 100001 || now < 0) continue;
+        for (int next : {here + 1, here - 1, here * 2}) {
+            if (next < 0 || next >= MAX || visited[next]) continue;
 
-        for (int i = 0; i < 3; i++) {
-            int next;
-            if (i == 0) {
-                if (now == 0) continue;
-                next = now * 2;
-            }
-            else next = now + mv[i - 1];
-
-            if (0 <= next && next < 100005) {
-                if (pre[next] == -1) {
-                    pre[next] = now;
-                    q.push({ next, cnt + 1 });
-                }
-            }
+            q.push(next);
+            prev[next] = here;
+            visited[next] = true;
         }
     }
+
+    for (int i = K; i != N; i = prev[i]) {
+        v.push_back(i);
+    }
+    v.push_back(N);
+
+    reverse(v.begin(), v.end());
+
+    cout << v.size() - 1 << "\n";
+    for (int i : v)
+        cout << i << " ";
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
     cin >> N >> K;
-    pre[N] = -1;
-
-    if (N > K) {
-        cout << N - K << "\n";
-        for (int i = N; i >= K; i--) cout << i << " ";
-    }
-
-    else {
-        search();
-        cout << ans << "\n";
-        solve(K);
-    }
+    bfs();
 
     return 0;
 }
