@@ -1,73 +1,63 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int ans, N, K;
-vector<string> word;
-vector<bool> learn;
+int N, K;
+int word[51];
+char c[5] = { 'a', 'n', 't', 'i', 'c' };
 
-void Search(int x, int cnt) {
-    if (cnt == 0) {
-        int res = 0;
-
-        for (auto s : word) {
-            res++;
-
-            for (int i = 0; i < s.size(); i++) {
-                if (!learn[s[i] - 'a']) {
-                    res--;
-                    break;
-                }
-            }
-        }
-
-        ans = max(ans, res);
-        return;
+int count(int mask) {
+    int cnt = 0;
+    for (int w : word) {
+        if (w && (w & mask) == w)cnt++;
     }
-
-    for (int i = x; i < 26; i++) {
-        if (learn[i]) continue;
-
-        learn[i] = true;
-        Search(i + 1, cnt - 1);
-        learn[i] = false;
-    }
+    return cnt;
 }
 
-void Solution() {
-    if (K < 5) {
-        cout << 0;
-        return;
+int teach(int index, int k, int mask) {
+    if (k < 0) return 0;
+
+    if (index == 26) return count(mask);
+
+    int res = 0;
+
+    if (mask & (1 << index)) {
+        res = teach(index + 1, k, mask);
+    }
+    else {
+        res = teach(index + 1, k, mask);
+        res = max(res, teach(index + 1, k - 1, mask | (1 << index)));
     }
 
-    Search(0, K - 5);
-    cout << ans;
-}
-
-void Input() {
-    string s, w = "antic";
-    learn.resize(26, false);
-    cin >> N >> K;
-
-    for (int i = 0; i < N; i++) {
-        cin >> s;
-        word.push_back(s.substr(4, s.size() - 8));
-    }
-
-    for (int i = 0; i < 5; i++) 
-        learn[w[i] - 'a'] = true;
-}
-
-void Solve() {
-    Input();
-    Solution();
+    return res;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-    Solve();
+    cin >> N >> K;
+
+    if (K < 5) {
+        cout << 0;
+        return 0;
+    }
+
+    string s;
+    int mask = 0;
+    
+    for (int i = 0; i < N; i++) {
+        cin >> s;
+
+        for (char ch : s)
+            word[i] |= (1 << (ch - 'a'));
+    }
+
+    for (char ch : c)
+        mask |= (1 << (ch - 'a'));
+
+    cout << teach(0, K - 5, mask);
+
     return 0;
 }
