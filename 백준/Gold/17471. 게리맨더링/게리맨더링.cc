@@ -1,136 +1,71 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <queue>
-#include <cmath>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int N, sum, ans = 1000000001;
+int N, p[11], color[11], visited[11];
+vector<int> graph[11];
 
-vector<int> people;
-vector<bool> visit;
-vector<bool> choice;
-vector<vector<int>> graph;
-
-bool check(int x, int total) {
-    queue<int> q;
-    q.push(x);
-    visit[x] = true;
-
+int dfs(int x, int c) {
     int cnt = 1;
+    visited[x] = 1;
 
-    while (!q.empty()) {
-        int now = q.front();
-        q.pop();
+    for (int i = 0; i < graph[x].size(); i++) {
+        int next = graph[x][i];
 
-        for (int i = 0; i < graph[now].size(); i++) {
-            int next = graph[now][i];
+        if (visited[next] || color[next] != c) continue;
 
-            if (visit[next]) continue;
-
-            visit[next] = true;
-            q.push(next);
-            cnt++;
-        }
+        cnt += dfs(next, c);
     }
 
-    if (cnt + total == N) return true;
-    return false;
-}
-
-void bfs(int x, int total, int sub) {
-    queue<int> q;
-    q.push(x);
-    visit[x] = true;
-
-    int cnt = 1;
-
-    while (!q.empty()) {
-        int now = q.front();
-        q.pop();
-
-        for (int i = 0; i < graph[now].size(); i++) {
-            int next = graph[now][i];
-
-            if (visit[next] || !choice[next]) continue;
-
-            visit[next] = true;
-            q.push(next);
-            cnt++;
-        }
-    }
-
-    if (cnt == total) {
-        bool pass = false;
-
-        for (int i = 1; i <= N; i++) {
-            if (!choice[i]) {
-                pass = check(i, total);
-                break;
-            }
-        }
-
-        if(pass) ans = min(ans, abs(sum - (2 * sub)));
-    }
-    fill(visit.begin(), visit.end(), false);
-}
-
-void Search(int cnt, int target, int x, int sub) {
-    if (cnt == target) {
-        bfs(x, target, sub);
-        return;
-    }
-
-    for (int i = x; i <= N; i++) {
-        if (choice[i]) continue;
-
-        choice[i] = true;
-        Search(cnt + 1, target, i, sub + people[i]);
-        choice[i] = false;
-    }
-}
-
-void Solution() {
-    for (int i = 1; i <= N / 2 + N % 2; i++) {
-        Search(0, i, 1, 0);
-        fill(choice.begin(), choice.end(), false);
-    }
-
-    if (ans != 1000000001) cout << ans;
-    else cout << -1;
-}
-
-void Input() {
-    cin >> N;
-
-    graph.resize(N + 1);
-    people.resize(N + 1);
-    visit.resize(N + 1, false);
-    choice.resize(N + 1, false);        
-
-    for (int i = 1; i <= N; i++) {
-        cin >> people[i];
-        sum += people[i];
-    }       
-
-    for (int i = 1; i <= N; i++) {
-        int node, n;
-        cin >> n;
-
-        for (int j = 0; j < n; j++) {
-            cin >> node;
-            graph[i].push_back(node);
-            graph[node].push_back(i);
-        }
-    }
+    return cnt;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-    Input();
-    Solution();
+    int n, ans = INT_MAX, temp;
+    cin >> N;
+
+    for (int i = 1; i <= N; i++)
+        cin >> p[i];
+
+    for (int i = 1; i <= N; i++) {
+        cin >> n;
+        for (int j = 0; j < n; j++) {
+            cin >> temp;
+            graph[i].push_back(temp);
+            graph[temp].push_back(i);
+        }   
+    }
+
+    // 비트마스킹을 사용하여 구역을 나누는 모든 경우의 수
+    for (int i = 1; i < (1 << N) - 1; i++) {
+        int idx1 = 0, idx2 = 0, sum1 = 0, sum2 = 0, res1, res2;
+
+        for (int j = 1; j <= N; j++) {
+            if (i & (1 << j)) {
+                color[j] = 1;
+                idx1 = j;
+                sum1 += p[j];
+            }
+            else {
+                idx2 = j;
+                sum2 += p[j];
+            }
+        }
+
+        res1 = dfs(idx1, 1);
+        res2 = dfs(idx2, 0);
+
+        if (res1 + res2 == N) ans = min(ans, abs(sum1 - sum2));
+
+        memset(color, 0, sizeof(color));
+        memset(visited, 0, sizeof(visited));
+    }
+
+    if (ans == INT_MAX) cout << -1;
+    else cout << ans;
     return 0;
 }
