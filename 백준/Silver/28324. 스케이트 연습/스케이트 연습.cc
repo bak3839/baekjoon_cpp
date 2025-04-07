@@ -3,7 +3,8 @@
 
 using namespace std;
 
-int N, v[500001], ans = 1, prev = 1;
+long long ans = 1;
+int N, v[500001], prev = 1;
 
 int main() {
     ios_base::sync_with_stdio(false);
