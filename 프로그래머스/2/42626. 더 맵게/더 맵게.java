@@ -17,7 +17,7 @@ class Solution {
             Long s2 = pq.poll();
             
             if(s2 == null) break;
-            
+
             pq.add(s1 + s2 * 2);
             
             answer++;
