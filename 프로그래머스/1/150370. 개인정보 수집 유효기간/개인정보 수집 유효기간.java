@@ -12,13 +12,7 @@ class Solution {
         year += ((month + term) / 12);
         month = (month + term) % 12;
         
-//         if(day == 0) {
-//             day = 28;
-//             month--;
-//             if(month == 0) year--;
-//         }
         ans = (year * 10000) + (month * 100) + day;
-        System.out.println(ans);
         return ans;
     }
     
