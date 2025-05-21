@@ -11,6 +11,8 @@ public class Main {
     static boolean[][] visited = new boolean[6][6];
 
     public static void search(int type, int x, int y, int targetX, int targetY, int count) {
+        if(count > total) return;
+
         if(count == total && x == targetX && y == targetY) {
             if(type == 0) search(1, 5, 5, targetX, targetY, 0);
             else ans++;
