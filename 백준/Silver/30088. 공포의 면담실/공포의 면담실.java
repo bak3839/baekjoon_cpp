@@ -10,8 +10,8 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int N = Integer.parseInt(st.nextToken());
-        int[] total = new int[N + 1];
-        int ans = 0;
+        long[] total = new long[N + 1];
+        long ans = 0;
 
         for(int i = 1; i <= N; i++) {
             st = new StringTokenizer(br.readLine());
