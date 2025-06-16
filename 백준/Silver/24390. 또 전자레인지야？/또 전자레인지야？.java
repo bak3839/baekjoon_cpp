@@ -28,7 +28,6 @@ public class Main {
 
     public static void bfs(Oven startOven) {
         Deque<Oven> deque = new ArrayDeque<>();
-        int startTime = startOven.getTime();
         visited[startOven.getTime()] = true;
         deque.push(startOven);
 
