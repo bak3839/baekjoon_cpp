@@ -11,9 +11,9 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
         int Q = Integer.parseInt(st.nextToken());
-        int[] sum = new int[N + 1];
+        long[] sum = new long[N + 1];
 
-        int cnt = 0;
+        long cnt = 0;
         st = new StringTokenizer(br.readLine());
         for (int i = 1; i <= N; i++) {
             int num = Integer.parseInt(st.nextToken());
